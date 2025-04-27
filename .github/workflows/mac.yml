@@ -1,0 +1,64 @@
+name: macOS
+
+on:
+  push:
+    branches:
+    - 'main'
+
+jobs:
+  first:
+    runs-on: macos-latest
+    steps:
+    - name: Verify Java
+      run: |
+        java --version
+
+    - name: Verify Xcode
+      run: |
+        xcode-select -p 
+
+    - name: Xcode Version 
+      run: |
+        xcodebuild -version
+
+    - name: Set up Xcode
+      run: |
+        sudo xcode-select -switch /Applications/Xcode.app
+        xcodebuild -version
+
+    - name: Open Xcode
+      run: |
+        open -a Simulator  
+
+    - name: Install Node.js v20.13.0
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.13.0'
+
+    - name: Install npm v10.2.4 (included with Node.js 20.13.0)
+      run: npm -v
+
+    - name: Install yarn v1.22.22
+      run: npm install -g yarn@1.22.22
+      # Verificar la versión de yarn
+      # run: yarn --version
+
+    - name: Yarn Version
+      run: yarn --version
+
+    - name: Install Java Development Kit (JDK)
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '11' # O la versión que necesites para Gradle
+
+    - name: Verify Java second
+      run: |
+        java --version
+
+    - name: Install Gradle
+      uses: gradle/gradle-build-action@v2
+
+    - name: Gradle Version
+      run: |
+        gradle -v
